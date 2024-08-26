@@ -25,14 +25,14 @@ def prepare_input(opt):
     df_input = pd.read_csv(os.path.join(opt.data_path, opt.test_file_name + '.csv'), sep=",")
     delta_pkis=['(-0.5, 0.5]','(0.5, 1.5]','(1.5, 2.5]','(2.5, 4.5]','(4.5, 6.5]','(6.5, 8.5]','(8.5, 10.5]','(10.5, inf]']
     # TODO：这是分子到分子的generate数据处理？
-    if "Delta_pki" not in df_input.columns:
-        newData=[]
-        for idx,irow in df_input.iterrows():
-            for idelta_pki in delta_pkis:
-                newData.append([irow['fromVarSMILES'],irow['constantSMILES'],idelta_pki])
-        df_new=pd.DataFrame(newData, columns=['fromVarSMILES','constantSMILES','Delta_pki'])
-        df_new.to_csv(os.path.join(opt.data_path, opt.test_file_name + '_prepared'+'.csv'), index=None)
-        return opt.test_file_name + '_prepared'
+    # if "Delta_pki" not in df_input.columns:
+    #     newData=[]
+    #     for idx,irow in df_input.iterrows():
+    #         for idelta_pki in delta_pkis:
+    #             newData.append([irow['fromVarSMILES'],irow['constantSMILES'],idelta_pki])
+    #     df_new=pd.DataFrame(newData, columns=['fromVarSMILES','constantSMILES','Delta_pki'])
+    #     df_new.to_csv(os.path.join(opt.data_path, opt.test_file_name + '_prepared'+'.csv'), index=None)
+    #     return opt.test_file_name + '_prepared'
     return opt.test_file_name
 
 class GenerateRunner():
@@ -133,6 +133,7 @@ class GenerateRunner():
         unique_set_num_samples = [set() for i in range(batch_size)]   # for each starting molecule
         batch_index = torch.LongTensor(range(batch_size))
         batch_index_current = torch.LongTensor(range(batch_size)).to(device)
+        # TODO:这个好像没有用到？
         start_mols = []
         # zeros correspondes to ****** which is valid according to RDKit
         sequences_all = torch.ones((num_samples, batch_size, max_len))
@@ -140,20 +141,21 @@ class GenerateRunner():
         max_trials = 100  # Maximum trials for sampling
         current_trials = 0
 
-        # TODO: greedy是什么意思？
+        # greedy意思是只尝试一次生成，成了就有分子式，没成的话就没有
         if decode_type == 'greedy':
             max_trials = 1
 
         # Set of unique starting molecules
         if src is not None:
-            # TODO: 为什么start_index是properties的长度？
+            # 这里需要修改，delta_value并不是放在第一位置
             start_ind = len(cfgd.PROPERTIES)
             for ibatch in range(batch_size):
                 source_smi = self.tokenizer.untokenize(self.vocab.decode(src[ibatch].tolist()[start_ind:]))
                 source_smi = uc.get_canonical_smile(source_smi)
-                # 先添加自己？
-                unique_set_num_samples[ibatch].add(source_smi)
-                start_mols.append(source_smi)
+                if source_smi:
+                    # 先添加source，用于后面去重，TODO: 但这里也不太对，因为这里已经是被mmpdb分开的，而不是一个完整的SMILES
+                    unique_set_num_samples[ibatch].add(source_smi)
+                    start_mols.append(source_smi)
 
         with torch.no_grad():
             if model_choice == 'seq2seq':
@@ -208,6 +210,7 @@ class GenerateRunner():
                             sequences[good_index]
 
                 not_completed_index = np.where(num_valid_batch < num_valid_batch_desired)[0]
+                # 选择未生成满的source样本继续生成
                 if len(not_completed_index) > 0:
                     batch_index_current = batch_index.index_select(0, torch.LongTensor(not_completed_index)).to(device)
 

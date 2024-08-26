@@ -19,3 +19,20 @@
 09:18:10: preprocess.<module> +80: INFO     Save vocabulary to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_5k/vocab.pkl
 09:18:10: data_preparation.split_data +36: INFO     Read /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_5k/train_valid_test_full_encoded.csv file
 09:18:10: data_preparation.split_data +42: INFO     Train, Validation, Test: 12939, 1438, 1598
+00:56:35: preprocess.<module> +113: INFO     Property condition tokens: 24
+01:01:46: preprocess.<module> +113: INFO     Property condition tokens: 24
+01:02:22: preprocess.<module> +114: INFO     Property condition tokens: 24
+01:03:23: preprocess.<module> +113: INFO     Property condition tokens: 24
+01:03:23: preprocess.save_df_property_encoded +73: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k/train_valid_test_full_encoded.csv
+01:03:23: preprocess.<module> +116: INFO     Building vocabulary
+01:03:23: preprocess.<module> +123: INFO     Vocabulary contains 56 tokens: ['*', '^', '$', '#', '(', ')', '-', '.', '1', '2', '3', '4', '=', 'C', 'Cl', 'F', 'N', 'O', 'S', '[*:1]', '[*:2]', '[*:3]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[H]', 'c', 'n', 'o', 's', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0', 'P', 'k', 'i', '8']
+01:03:23: preprocess.<module> +131: INFO     Save vocabulary to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k/vocab.pkl
+01:03:23: data_preparation.split_data +37: INFO     Read /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k/train_valid_test_full_encoded.csv file
+01:03:23: data_preparation.split_data +43: INFO     Train, Validation, Test: 1755, 196, 217
+01:26:49: preprocess.<module> +113: INFO     Property condition tokens: 22
+01:26:49: preprocess.save_df_property_encoded +73: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k/train_valid_test_full_encoded.csv
+01:26:49: preprocess.<module> +116: INFO     Building vocabulary
+01:26:49: preprocess.<module> +123: INFO     Vocabulary contains 54 tokens: ['*', '^', '$', '#', '(', ')', '-', '.', '1', '2', '3', '4', '=', 'C', 'Cl', 'F', 'N', 'O', 'S', '[*:1]', '[*:2]', '[*:3]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[H]', 'c', 'n', 'o', 's', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0', 'Pki', '8']
+01:26:49: preprocess.<module> +131: INFO     Save vocabulary to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k/vocab.pkl
+01:26:49: data_preparation.split_data +37: INFO     Read /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k/train_valid_test_full_encoded.csv file
+01:26:49: data_preparation.split_data +43: INFO     Train, Validation, Test: 1755, 196, 217

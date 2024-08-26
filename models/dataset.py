@@ -41,21 +41,20 @@ class Dataset(tud.Dataset):
         """
 
         row = self._data.iloc[i]
-
         # tokenize and encode source smiles
         sourceConstant = row['constantSMILES']
         sourceVariable = row['fromVarSMILES']
+        name = row['name']
+        value = row['Delta_Value']
         source_tokens = []
 
+        # 先variable
         source_tokens.extend(self._tokenizer.tokenize(sourceVariable))  ## add source variable SMILES token
-        for property_name in cfgd.PROPERTIES:
-            '''add properties token'''
-            if property_name == 'pki':
-                source_tokens.append(row['Delta_{}'.format(property_name)])
-            elif property_name == 'qed':
-                source_tokens.append(row['Delta_{}'.format(property_name)])
-            elif property_name == 'sa':
-                source_tokens.append(row['Delta_{}'.format(property_name)])
+        # 再name
+        source_tokens.append(name)
+        # 然后value
+        source_tokens.append(value)
+        # 接着constant
         source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
         source_encoded = self._vocabulary.encode(source_tokens)
         
