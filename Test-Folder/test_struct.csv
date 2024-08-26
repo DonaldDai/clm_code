@@ -1,0 +1,11 @@
+fromVarSMILES,constantSMILES,id,normalizedSMILES,attachmentOrder
+[*:1]C(=O)O,[*:1]c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,0
+[*:1]N1CCNCC1,[*:1]c1ccc2c(=O)c(C(=O)O)cn(-c3ccccc3)c2c1,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,0
+[*:1]c1ccccc1,[*:1]n1cc(C(=O)O)c(=O)c2ccc(N3CCNCC3)cc21,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,0
+[*:1]c1ccc2c(=O)c(C(=O)O)cn(-c3ccccc3)c2c1,[*:1]N1CCNCC1,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,0
+[*:1]n1cc(C(=O)O)c(=O)c2ccc(N3CCNCC3)cc21,[*:1]c1ccccc1,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,0
+[*:1]c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,[*:1]C(=O)O,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,0
+[*:1]c1ccc2c(=O)c(C(=O)O)cn([*:2])c2c1,[*:1]N1CCNCC1.[*:2]c1ccccc1,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,1
+[*:1]c1ccc2c(=O)c([*:2])cn(-c3ccccc3)c2c1,[*:2]C(=O)O.[*:1]N1CCNCC1,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,10
+[*:1]c1cn([*:2])c2cc(N3CCNCC3)ccc2c1=O,[*:1]C(=O)O.[*:2]c1ccccc1,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,1
+[*:1]c1ccc2c(=O)c([*:2])cn([*:3])c2c1,[*:2]C(=O)O.[*:1]N1CCNCC1.[*:3]c1ccccc1,CPD-0,O=C(O)c1cn(-c2ccccc2)c2cc(N3CCNCC3)ccc2c1=O,102
