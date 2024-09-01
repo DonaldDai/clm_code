@@ -36,3 +36,162 @@
 01:26:49: preprocess.<module> +131: INFO     Save vocabulary to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k/vocab.pkl
 01:26:49: data_preparation.split_data +37: INFO     Read /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k/train_valid_test_full_encoded.csv file
 01:26:49: data_preparation.split_data +43: INFO     Train, Validation, Test: 1755, 196, 217
+01:33:35: make_vocal.<module> +146: INFO     Vocabulary contains 25 tokens: ['*', '^', '$', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0', '8']
+01:33:35: make_vocal.<module> +150: INFO     Save vocabulary to file: ./vocab.pkl
+01:35:35: make_vocal.<module> +146: INFO     Vocabulary contains 25 tokens: ['*', '^', '$', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0', '8']
+01:35:35: make_vocal.<module> +150: INFO     Save vocabulary to file: ./vocab.pkl
+01:35:50: make_vocal.record_vocal +111: INFO     Building vocabulary
+01:35:50: make_vocal.record_vocal +111: INFO     Building vocabulary
+01:38:36: make_vocal.record_vocal +111: INFO     Building vocabulary
+01:38:36: make_vocal.record_vocal +111: INFO     Building vocabulary
+01:38:36: make_vocal.record_vocal +111: INFO     Building vocabulary
+01:38:36: make_vocal.record_vocal +111: INFO     Building vocabulary
+01:38:37: make_vocal.record_vocal +111: INFO     Building vocabulary
+01:38:37: make_vocal.<module> +146: INFO     Vocabulary contains 77 tokens: ['#', '(', ')', '-', '.', '/', '1', '2', '3', '4', '5', '=', 'Br', 'C', 'Cl', 'F', 'I', 'N', 'O', 'S', '[*:1]', '[*:2]', '[*:3]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[H]', '[N+]', '[O-]', '[S+]', '[S@@]', '[nH]', '\\', 'c', 'n', 'o', 's', 'absorption', 'pampa_ncats', 'P', 'pgp_broccatelli', '[S]', '[n+]', 'hia_hou', '6', '[N-]', 'bioavailability_ma', '[S@]', '[Si]', '[se]', 'lipophilicity_astrazeneca', '*', '^', '$', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0', '8']
+01:38:37: make_vocal.<module> +150: INFO     Save vocabulary to file: ./vocab.pkl
+02:00:10: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pampa_ncats__absorption__pampa_ncats/absorption_pampa_ncats__absorption__pampa_ncats_MMP_encoded.csv
+02:00:10: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 10377, 1153, 1282
+02:00:10: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pgp_broccatelli__absorption__pgp_broccatelli/absorption_pgp_broccatelli__absorption__pgp_broccatelli_MMP_encoded.csv
+02:00:10: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 4109, 457, 508
+02:00:10: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_hia_hou__absorption__hia_hou/absorption_hia_hou__absorption__hia_hou_MMP_encoded.csv
+02:00:10: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 986, 110, 122
+02:00:10: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_bioavailability_ma__absorption__bioavailability_ma/absorption_bioavailability_ma__absorption__bioavailability_ma_MMP_encoded.csv
+02:00:10: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 936, 104, 116
+02:00:11: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca_MMP_encoded.csv
+02:00:11: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 24024, 2670, 2966
+02:06:59: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pampa_ncats__absorption__pampa_ncats/absorption_pampa_ncats__absorption__pampa_ncats_MMP_encoded.csv
+02:06:59: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 10377, 1153, 1282
+02:06:59: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pgp_broccatelli__absorption__pgp_broccatelli/absorption_pgp_broccatelli__absorption__pgp_broccatelli_MMP_encoded.csv
+02:06:59: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 4109, 457, 508
+02:06:59: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_hia_hou__absorption__hia_hou/absorption_hia_hou__absorption__hia_hou_MMP_encoded.csv
+02:06:59: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 986, 110, 122
+02:06:59: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_bioavailability_ma__absorption__bioavailability_ma/absorption_bioavailability_ma__absorption__bioavailability_ma_MMP_encoded.csv
+02:06:59: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 936, 104, 116
+02:07:00: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca_MMP_encoded.csv
+02:07:00: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 24024, 2670, 2966
+04:14:41: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:14:41: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:14:42: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:14:42: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:14:42: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:14:42: make_vocal.<module> +98: INFO     Vocabulary contains 77 tokens: ['*', '^', '$', '#', '(', ')', '-', '.', '/', '1', '2', '3', '4', '5', '=', 'Br', 'C', 'Cl', 'F', 'I', 'N', 'O', 'S', '[*:1]', '[*:2]', '[*:3]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[H]', '[N+]', '[O-]', '[S+]', '[S@@]', '[nH]', '\\', 'c', 'n', 'o', 's', 'absorption', 'pampa_ncats', 'P', 'pgp_broccatelli', '[S]', '[n+]', 'hia_hou', '6', '[N-]', 'bioavailability_ma', '[S@]', '[Si]', '[se]', 'lipophilicity_astrazeneca', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0', '8']
+04:14:42: make_vocal.<module> +102: INFO     Save vocabulary to file: ./vocab.pkl
+04:15:00: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pampa_ncats__absorption__pampa_ncats/absorption_pampa_ncats__absorption__pampa_ncats_MMP_encoded.csv
+04:15:00: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 10377, 1153, 1282
+04:15:00: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pgp_broccatelli__absorption__pgp_broccatelli/absorption_pgp_broccatelli__absorption__pgp_broccatelli_MMP_encoded.csv
+04:15:00: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 4109, 457, 508
+04:15:00: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_hia_hou__absorption__hia_hou/absorption_hia_hou__absorption__hia_hou_MMP_encoded.csv
+04:15:00: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 986, 110, 122
+04:15:00: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_bioavailability_ma__absorption__bioavailability_ma/absorption_bioavailability_ma__absorption__bioavailability_ma_MMP_encoded.csv
+04:15:00: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 936, 104, 116
+04:15:01: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca_MMP_encoded.csv
+04:15:01: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 24024, 2670, 2966
+04:18:46: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:18:46: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:18:46: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:18:46: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:18:46: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:18:46: make_vocal.<module> +98: INFO     Vocabulary contains 77 tokens: ['*', '^', '$', '#', '(', ')', '-', '.', '/', '1', '2', '3', '4', '5', '=', 'Br', 'C', 'Cl', 'F', 'I', 'N', 'O', 'S', '[*:1]', '[*:2]', '[*:3]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[H]', '[N+]', '[O-]', '[S+]', '[S@@]', '[nH]', '\\', 'c', 'n', 'o', 's', 'absorption', 'pampa_ncats', 'P', 'pgp_broccatelli', '[S]', '[n+]', 'hia_hou', '6', '[N-]', 'bioavailability_ma', '[S@]', '[Si]', '[se]', 'lipophilicity_astrazeneca', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0', '8']
+04:18:46: make_vocal.<module> +102: INFO     Save vocabulary to file: ./vocab.pkl
+04:21:05: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:21:05: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:21:05: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:21:05: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:21:05: make_vocal.record_vocal +63: INFO     Building vocabulary
+04:21:05: make_vocal.<module> +98: INFO     Vocabulary contains 77 tokens: ['*', '^', '$', '#', '(', ')', '-', '.', '/', '1', '2', '3', '4', '5', '=', 'Br', 'C', 'Cl', 'F', 'I', 'N', 'O', 'S', '[*:1]', '[*:2]', '[*:3]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[H]', '[N+]', '[O-]', '[S+]', '[S@@]', '[nH]', '\\', 'c', 'n', 'o', 's', 'absorption', 'pampa_ncats', 'P', 'pgp_broccatelli', '[S]', '[n+]', 'hia_hou', '6', '[N-]', 'bioavailability_ma', '[S@]', '[Si]', '[se]', 'lipophilicity_astrazeneca', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0', '8']
+04:21:05: make_vocal.<module> +102: INFO     Save vocabulary to file: ./vocab.pkl
+04:31:06: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__chembl34_IC50/activity_IC50__chembl34_IC50_MMP.csv
+04:34:00: make_train_data.<module> +115: INFO     
+=== handling {file}
+04:34:11: make_vocal.record_vocal +45: INFO     ===finish reading
+04:34:11: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__chembl34_IC50/activity_IC50__chembl34_IC50_MMP.csv
+04:34:35: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:34:58: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pampa_ncats__absorption__pampa_ncats/absorption_pampa_ncats__absorption__pampa_ncats_MMP.csv
+04:34:58: make_vocal.record_vocal +45: INFO     ===finish reading
+04:34:58: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:34:58: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__BindingDB_All_202407/activity_IC50__BindingDB_All_202407_MMP.csv
+04:35:03: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:04: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:04: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pgp_broccatelli__absorption__pgp_broccatelli/absorption_pgp_broccatelli__absorption__pgp_broccatelli_MMP.csv
+04:35:04: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:04: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:04: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__chembl34_Ki/activity_Ki__chembl34_Ki_MMP.csv
+04:35:38: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:42: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:46: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Kd__chembl34_Kd/activity_Kd__chembl34_Kd_MMP.csv
+04:35:47: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:47: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:48: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_hia_hou__absorption__hia_hou/absorption_hia_hou__absorption__hia_hou_MMP.csv
+04:35:48: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:48: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:48: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Kd__BindingDB_All_202407/activity_Kd__BindingDB_All_202407_MMP.csv
+04:35:49: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:49: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:50: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_bioavailability_ma__absorption__bioavailability_ma/absorption_bioavailability_ma__absorption__bioavailability_ma_MMP.csv
+04:35:50: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:50: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:50: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_EC50__BindingDB_All_202407/activity_EC50__BindingDB_All_202407_MMP.csv
+04:35:55: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:56: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:58: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca_MMP.csv
+04:35:58: make_vocal.record_vocal +45: INFO     ===finish reading
+04:35:58: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:35:58: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_EC50__chembl34_EC50/activity_EC50__chembl34_EC50_MMP.csv
+04:36:08: make_vocal.record_vocal +45: INFO     ===finish reading
+04:36:10: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:36:14: make_vocal.<module> +89: INFO     ===handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__BindingDB_All_202407/activity_Ki__BindingDB_All_202407_MMP.csv
+04:36:33: make_vocal.record_vocal +45: INFO     ===finish reading
+04:36:36: make_vocal.record_vocal +65: INFO     Building vocabulary
+04:36:40: make_vocal.<module> +100: INFO     Vocabulary contains 185 tokens: ['*', '^', '$', '#', '%10', '%11', '%12', '%13', '%14', '%15', '%16', '%17', '%18', '%19', '%20', '%21', '(', ')', '-', '.', '/', '1', '2', '3', '4', '5', '6', '7', '8', '9', '=', 'B', 'Br', 'C', 'Cl', 'F', 'I', 'N', 'O', 'P', 'S', '[*:1]', '[*:2]', '[*:3]', '[10B]', '[11CH3]', '[11C]', '[11c]', '[123I]', '[125I]', '[13CH2]', '[13CH3]', '[13CH]', '[13c]', '[14C]', '[15NH]', '[18F]', '[19F]', '[2H]', '[35S]', '[3H]', '[Al]', '[As]', '[B-]', '[BH3-]', '[C+]', '[C-]', '[C@@H]', '[C@@]', '[C@H]', '[C@]', '[H]', '[I+]', '[N+]', '[N-]', '[N@+]', '[N@@+]', '[N@@]', '[N@]', '[NH+]', '[NH-]', '[NH2+]', '[Na]', '[O+]', '[O-]', '[O]', '[P+]', '[P@@]', '[P@]', '[PH]', '[S+]', '[S-]', '[S@+]', '[S@@+]', '[S@@]', '[S@]', '[SH]', '[Se+]', '[SeH]', '[Se]', '[Si@@H]', '[Si@@]', '[SiH]', '[Si]', '[Te]', '[c+]', '[n+]', '[n-]', '[nH]', '[o+]', '[s+]', '[se+]', '[se]', '[te+]', '[te]', '\\', 'c', 'n', 'o', 's', 'activity', 'IC50', 'absorption', 'pampa_ncats', '[CH+]', '[CH-]', '[Gd-4]', '[NH3+]', '[OH+]', '[Pt]', '[Ru]', '[Sb]', '[c-]', '[cH-]', '[nH+]', 'pgp_broccatelli', '[11CH2]', '[13C]', '[17F]', '[76Br]', '[BH2-]', 'Ki', '[14CH3]', 'Kd', '[S]', 'hia_hou', '[N@@H+]', '[SiH2]', 'bioavailability_ma', '[Au]', '[Fe]', '[Hg]', '[K]', 'EC50', 'lipophilicity_astrazeneca', '[As@@]', '[Fe+2]', '[N+2]', '[N@H+]', '[PH+]', '[Re]', '[SH+]', '[SiH3]', '[Zn]', '(-inf, -10.5]', '(-10.5, -8.5]', '(-8.5, -6.5]', '(-6.5, -4.5]', '(-4.5, -2.5]', '(-2.5, -1.5]', '(-1.5, -1.0]', '(-1.0, -0.5]', '(-0.5, 0.0]', '(0.0, 0.5]', '(0.5, 1.0]', '(1.0, 1.5]', '(1.5, 2.5]', '(2.5, 4.5]', '(4.5, 6.5]', '(6.5, 8.5]', '(8.5, 10.5]', '(10.5, inf]', '0-1', '1-0', '0-0']
+04:36:41: make_vocal.<module> +104: INFO     Save vocabulary to file: ./vocab.pkl
+04:48:59: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__chembl34_IC50/activity_IC50__chembl34_IC50_MMP_encoded.csv
+04:52:32: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 39035183, 4337243, 4819159
+04:55:48: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pampa_ncats__absorption__pampa_ncats/absorption_pampa_ncats__absorption__pampa_ncats_MMP.csv
+04:55:48: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pampa_ncats__absorption__pampa_ncats/absorption_pampa_ncats__absorption__pampa_ncats_MMP_encoded.csv
+04:55:48: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 10377, 1153, 1282
+04:55:48: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__BindingDB_All_202407/activity_IC50__BindingDB_All_202407_MMP.csv
+04:56:00: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__BindingDB_All_202407/activity_IC50__BindingDB_All_202407_MMP_encoded.csv
+04:56:03: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 551896, 61322, 68136
+04:56:05: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pgp_broccatelli__absorption__pgp_broccatelli/absorption_pgp_broccatelli__absorption__pgp_broccatelli_MMP.csv
+04:56:05: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pgp_broccatelli__absorption__pgp_broccatelli/absorption_pgp_broccatelli__absorption__pgp_broccatelli_MMP_encoded.csv
+04:56:05: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 4109, 457, 508
+04:56:05: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__chembl34_Ki/activity_Ki__chembl34_Ki_MMP.csv
+04:58:49: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__chembl34_Ki/activity_Ki__chembl34_Ki_MMP_encoded.csv
+04:59:28: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 7410629, 823404, 914893
+05:00:01: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Kd__chembl34_Kd/activity_Kd__chembl34_Kd_MMP.csv
+05:00:08: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Kd__chembl34_Kd/activity_Kd__chembl34_Kd_MMP_encoded.csv
+05:00:09: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 286896, 31878, 35420
+05:00:10: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_hia_hou__absorption__hia_hou/absorption_hia_hou__absorption__hia_hou_MMP.csv
+05:00:11: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_hia_hou__absorption__hia_hou/absorption_hia_hou__absorption__hia_hou_MMP_encoded.csv
+05:00:11: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 986, 110, 122
+05:00:11: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Kd__BindingDB_All_202407/activity_Kd__BindingDB_All_202407_MMP.csv
+05:00:17: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Kd__BindingDB_All_202407/activity_Kd__BindingDB_All_202407_MMP_encoded.csv
+05:00:19: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 291092, 32344, 35938
+05:00:20: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_bioavailability_ma__absorption__bioavailability_ma/absorption_bioavailability_ma__absorption__bioavailability_ma_MMP.csv
+05:00:20: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_bioavailability_ma__absorption__bioavailability_ma/absorption_bioavailability_ma__absorption__bioavailability_ma_MMP_encoded.csv
+05:00:20: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 936, 104, 116
+05:00:20: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_EC50__BindingDB_All_202407/activity_EC50__BindingDB_All_202407_MMP.csv
+05:01:01: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_EC50__BindingDB_All_202407/activity_EC50__BindingDB_All_202407_MMP_encoded.csv
+05:01:10: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 1766515, 196280, 218089
+05:01:18: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca_MMP.csv
+05:01:19: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca_MMP_encoded.csv
+05:01:19: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 24024, 2670, 2966
+05:01:19: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_EC50__chembl34_EC50/activity_EC50__chembl34_EC50_MMP.csv
+05:02:38: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_EC50__chembl34_EC50/activity_EC50__chembl34_EC50_MMP_encoded.csv
+05:02:56: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 3532507, 392501, 436112
+05:03:13: make_train_data.<module> +115: INFO     
+=== handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__BindingDB_All_202407/activity_Ki__BindingDB_All_202407_MMP.csv
+05:05:25: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__BindingDB_All_202407/activity_Ki__BindingDB_All_202407_MMP_encoded.csv
+05:05:57: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 6013697, 668189, 742432

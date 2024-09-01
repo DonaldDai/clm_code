@@ -27,7 +27,9 @@ class Vocabulary:
         if not isinstance(token, str):
             raise TypeError("Token is not a string")
         if token in self:
-            raise ValueError("Token already present in the vocabulary")
+            # raise ValueError("Token already present in the vocabulary")
+            print(f'=== Token "{token}"already present in the vocabulary')
+            return
         self._add(token, self._current_id)
         self._current_id += 1
         return self._current_id - 1

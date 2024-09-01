@@ -2,7 +2,7 @@ import math
 
 # Data
 DATA_DEFAULT = {
-    'max_sequence_length': 128,
+    'max_sequence_length': 256,
     'padding_value': 0
 }
 

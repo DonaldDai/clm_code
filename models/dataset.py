@@ -44,21 +44,25 @@ class Dataset(tud.Dataset):
         # tokenize and encode source smiles
         sourceConstant = row['constantSMILES']
         sourceVariable = row['fromVarSMILES']
-        name = row['name']
+        main_cls = row['main_cls']
+        minor_cls = row['minor_cls']
         value = row['Delta_Value']
+        # value = row['Delta_pki']
         source_tokens = []
 
         # 先variable
         source_tokens.extend(self._tokenizer.tokenize(sourceVariable))  ## add source variable SMILES token
-        # 再name
-        source_tokens.append(name)
+        # 再 major class eg activity
+        source_tokens.append(main_cls)
+        # 再 minor class eg Ki
+        source_tokens.append(minor_cls)
         # 然后value
         source_tokens.append(value)
         # 接着constant
         source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
         source_encoded = self._vocabulary.encode(source_tokens)
         
-       # print(source_tokens)
+        # print(source_tokens,'\n=====\n', source_encoded)
         # tokenize and encode target smiles if it is for training instead of evaluation
         if not self._prediction_mode:
             target_smi = row['toVarSMILES']
@@ -88,6 +92,7 @@ class Dataset(tud.Dataset):
         
         # maximum length of source sequences
         max_length_source = max([seq.size(0) for seq in source_encoded])
+        # print('=====max len', max_length_source)
         # padded source sequences with zeroes
         collated_arr_source = torch.zeros(len(source_encoded), max_length_source, dtype=torch.long)
         for i, seq in enumerate(source_encoded):
