@@ -3,3 +3,4 @@ generate*/
 Generation/
 *.pkl
 *.csv
+*.tar.gz

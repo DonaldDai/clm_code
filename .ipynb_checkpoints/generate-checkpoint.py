@@ -75,10 +75,7 @@ class GenerateRunner():
 
         # set device
         #device = ut.allocate_gpu()
-        # torch.cuda.set_device(1)
-        # current_device = torch.cuda.current_device()
-        # print("当前使用的 CUDA 设备编号是:", current_device)
-        device = torch.device('cuda:1')
+        device = torch.device('cuda')
         # 构造loader
         dataloader_test = self.initialize_dataloader(opt, self.vocab, opt.test_file_name)
 

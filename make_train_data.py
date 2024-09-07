@@ -111,10 +111,10 @@ if __name__ == "__main__":
         test.to_csv(os.path.join(parent, "test.csv"), index=False)
 
     root = '/home/yichao/zhilian/GenAICode/Data/MMPFinised/*'
-    # csvFiles = glob(f"{root}/*_MMP.csv")
-    # for file in csvFiles:
-    #     LOG.info(f"\n=== handling {file}")
-    #     gen_train_data(file)
+    csvFiles = glob(f"{root}/*_MMP.csv")
+    for file in csvFiles:
+        LOG.info(f"\n=== handling {file}")
+        gen_train_data(file)
     
     # merge train data
     combined_df = pd.DataFrame()
@@ -135,3 +135,13 @@ if __name__ == "__main__":
         combined_val_df = pd.concat([combined_val_df, df], ignore_index=True)
     # 保存到新的 CSV 文件，不包含索引
     combined_val_df.to_csv('./validation.csv', index=False)
+
+    # merge test data
+    combined_test_df = pd.DataFrame()
+    testFiles = glob(f"{root}/test.csv")
+    for test_file in testFiles:
+        LOG.info(f"\n=== mergin test: {test_file}")
+        df = pd.read_csv(test_file)
+        combined_test_df = pd.concat([combined_test_df, df], ignore_index=True)
+    # 保存到新的 CSV 文件，不包含索引
+    combined_test_df.to_csv('./test.csv', index=False)

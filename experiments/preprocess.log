@@ -195,3 +195,31 @@
 === handling /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__BindingDB_All_202407/activity_Ki__BindingDB_All_202407_MMP.csv
 05:05:25: make_train_data.gen_train_data +99: INFO     Saving encoded property change to file: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__BindingDB_All_202407/activity_Ki__BindingDB_All_202407_MMP_encoded.csv
 05:05:57: make_train_data.gen_train_data +106: INFO     Train, Validation, Test: 6013697, 668189, 742432
+20:38:05: make_train_data.<module> +123: INFO     
+=== mergin train: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__chembl34_IC50/train.csv
+20:38:36: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__chembl34_IC50/test.csv
+20:38:42: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pampa_ncats__absorption__pampa_ncats/test.csv
+20:38:43: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_IC50__BindingDB_All_202407/test.csv
+20:38:43: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_pgp_broccatelli__absorption__pgp_broccatelli/test.csv
+20:38:44: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__chembl34_Ki/test.csv
+20:38:45: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Kd__chembl34_Kd/test.csv
+20:38:46: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_hia_hou__absorption__hia_hou/test.csv
+20:38:46: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Kd__BindingDB_All_202407/test.csv
+20:38:47: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_bioavailability_ma__absorption__bioavailability_ma/test.csv
+20:38:47: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_EC50__BindingDB_All_202407/test.csv
+20:38:48: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/absorption_lipophilicity_astrazeneca__absorption__lipophilicity_astrazeneca/test.csv
+20:38:49: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_EC50__chembl34_EC50/test.csv
+20:38:49: make_train_data.<module> +143: INFO     
+=== mergin test: /home/yichao/zhilian/GenAICode/Data/MMPFinised/activity_Ki__BindingDB_All_202407/test.csv

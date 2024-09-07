@@ -23,5 +23,5 @@ python train.py --model-choice transformer  --data-path  /home/yichao/zhilian/Ge
 ` python generate.py --model-choice transformer$$  --data-path  /public/home/zhangjie/Projects/MMP/pot_clm/CLModel_v1/test_data   --test-file-name  test  --model-path /public/home/zhangjie/Projects/MMP/pot_clm/CLModel_v1/pretrain_test/checkpoint  --epoch 40    --vocab-path /public/home/zhangjie/Projects/MMP/pot_clm/CLModel_v1/TrainData_ChEMBL17  --save-directory FinetunedModels/finetune-AIXB3-JAK1 `
 
 ```shell
-python generate.py --model-choice transformer  --data-path  /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k   --test-file-name  test  --model-path /home/yichao/zhilian/GenAICode/CLModel_v2_zl/pretrain/checkpoint  --epoch 200    --vocab-path /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k  --save-directory /home/yichao/zhilian/GenAICode/CLModel_v2_zl/generate_temp
+python generate.py --model-choice transformer  --data-path  /home/yichao/zhilian/GenAICode/CLModel_v2_zl --test-file-name  test_100  --model-path /home/yichao/zhilian/GenAICode/CLModel_v2_zl/pretrain_v1/checkpoint  --epoch 4 --vocab-path /home/yichao/zhilian/GenAICode/CLModel_v2_zl  --save-directory /home/yichao/zhilian/GenAICode/CLModel_v2_zl/generate_temp
 ```
