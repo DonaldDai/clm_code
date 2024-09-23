@@ -46,6 +46,7 @@ class Dataset(tud.Dataset):
         sourceVariable = row['fromVarSMILES']
         main_cls = row['main_cls']
         minor_cls = row['minor_cls']
+        target_name = row['target_name']
         value = row['Delta_Value']
         # value = row['Delta_pki']
         source_tokens = []
@@ -58,6 +59,8 @@ class Dataset(tud.Dataset):
         source_tokens.append(minor_cls)
         # 然后value
         source_tokens.append(value)
+        # 然后target name
+        source_tokens.extend(list(target_name))
         # 接着constant
         source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
         source_encoded = self._vocabulary.encode(source_tokens)

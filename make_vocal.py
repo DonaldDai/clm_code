@@ -49,10 +49,12 @@ if __name__ == "__main__":
         property_condition.append(dfInput['main_cls'][0])
         # 添加minor_cls
         property_condition.append(dfInput['minor_cls'][0])
+        # 添加靶点信息
+        target_word_list = list(dfInput['target_name'][0])
         
         dfInput=dfInput.drop_duplicates(subset=['constantSMILES','fromVarSMILES','toVarSMILES'])
-        dfInput=dfInput[['constantSMILES','fromVarSMILES','toVarSMILES','Value_Diff', 'main_cls', 'minor_cls', 'value_type']]
-        dfInput.columns=['constantSMILES','fromVarSMILES','toVarSMILES','Delta_Value', 'main_cls', 'minor_cls', 'value_type']
+        dfInput=dfInput[['constantSMILES','fromVarSMILES','toVarSMILES','Value_Diff', 'main_cls', 'minor_cls', 'value_type', 'target_name']]
+        dfInput.columns=['constantSMILES','fromVarSMILES','toVarSMILES','Delta_Value', 'main_cls', 'minor_cls', 'value_type', 'target_name']
         # newPath=Path(args.input_data_path).parent.joinpath("train_valid_test_full.csv")   ## will be saved
         # dfInput=dfInput.to_csv(newPath, index=None)
         # args.input_data_path=newPath.as_posix()
@@ -71,11 +73,14 @@ if __name__ == "__main__":
         for smi in smiles_list:
             tokens.update(tokenizer.tokenize(smi, with_begin_and_end=False))
 
-        vocabulary.update(sorted(tokens))  # pad=0, start=1, end=2
+        vocabulary.update(target_word_list)
+        vocabulary.update(sorted(tokens))
         vocabulary.update(property_condition)
         
 
     vocabulary = mv.Vocabulary()
+    # pad=0, start=1, end=2
+    vocabulary.update(["*", "^", "$"])
     interval_token = []
     # 改为固定区间
     # 连续值区间
@@ -84,7 +89,6 @@ if __name__ == "__main__":
     interval_token.extend(bool_interval)
     csvFiles = glob(f"/home/yichao/zhilian/GenAICode/Data/MMPFinised/*/*_MMP.csv")
     # 记录smiles main_cls minor_cls
-    vocabulary.update(["*", "^", "$"])
     for file in csvFiles:
         LOG.info(f"===handling {file}")
         record_vocal(vocabulary, file)
