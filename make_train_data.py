@@ -78,6 +78,9 @@ if __name__ == "__main__":
     SPLIT_RATIO = args.train_ratio
     def gen_train_data(file_path):
         dfInput=pd.read_csv(file_path)
+        # 小于5的样本丢弃，不好区分测试集和验证集
+        if len(dfInput) < 5:
+            return
         dfInput=dfInput.drop_duplicates(subset=['constantSMILES','fromVarSMILES','toVarSMILES'])
         dfInput=dfInput[['constantSMILES','fromVarSMILES','toVarSMILES','Value_Diff', 'main_cls', 'minor_cls', 'value_type', 'target_name']]
         dfInput.columns=['constantSMILES','fromVarSMILES','toVarSMILES','Delta_Value', 'main_cls', 'minor_cls', 'value_type', 'target_name']
@@ -112,9 +115,11 @@ if __name__ == "__main__":
 
     root = '/home/yichao/zhilian/GenAICode/Data/MMPFinised/*'
     csvFiles = glob(f"{root}/*_MMP.csv")
-    for file in csvFiles:
+    for idx, file in enumerate(csvFiles):
         LOG.info(f"\n=== handling {file}")
         gen_train_data(file)
+        # if idx > 100:
+        #     break
     
     # merge train data
     combined_df = pd.DataFrame()

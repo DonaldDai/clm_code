@@ -42,6 +42,8 @@ if __name__ == "__main__":
 
     def record_vocal(vocabulary, file):
         dfInput=pd.read_csv(file)
+        if len(dfInput) < 1:
+            return
         LOG.info("===finish reading")
         # add property name before property change; save to file
         property_condition = []
@@ -89,9 +91,11 @@ if __name__ == "__main__":
     interval_token.extend(bool_interval)
     csvFiles = glob(f"/home/yichao/zhilian/GenAICode/Data/MMPFinised/*/*_MMP.csv")
     # 记录smiles main_cls minor_cls
-    for file in csvFiles:
+    for idx, file in enumerate(csvFiles):
         LOG.info(f"===handling {file}")
         record_vocal(vocabulary, file)
+        # if idx > 500:
+        #     break
     # Save vocabulary to file
     # 保存词典
     # parent_path = uf.get_parent_dir(args.input_data_path)
