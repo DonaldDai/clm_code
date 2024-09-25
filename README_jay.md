@@ -9,11 +9,15 @@ python preprocess.py -d 1 -i /home/yichao/zhilian/GenAICode/Data/MMPFinised/Bind
 `python train.py --model-choice transformer  --data-path  PretrainWork/ChEMBL32_Data   --save-directory PretrainWork/pretrain_chembl32`
 
 ```shell
-python train.py --model-choice transformer --num-epoch 200  --data-path  /home/yichao/zhilian/GenAICode/CLModel_v2_zl  --save-directory /home/yichao/zhilian/GenAICode/CLModel_v2_zl/pretrain_v1
+python train.py --model-choice transformer --num-epoch 200  --data-path  /home/yichao/zhilian/GenAICode/CLModel_v2_zl  --save-directory /home/yichao/zhilian/GenAICode/CLModel_v2_zl/pretrain_v2
 ```
 temp
 ```shell
 python train.py --model-choice transformer  --data-path  /home/yichao/zhilian/GenAICode/Data/MMPFinised/BindingDB_All_202407_1k  --save-directory /home/yichao/zhilian/GenAICode/CLModel_v2_zl/pretrain_temp
+```
+torchrun
+```shell
+torchrun --nproc_per_node=2 --nnodes=1 train.py --model-choice transformer --num-epoch 200  --data-path  /home/yichao/zhilian/GenAICode/CLModel_v2_zl  --save-directory /home/yichao/zhilian/GenAICode/CLModel_v2_zl/pretrain_v2
 ```
 
 # fine tuning

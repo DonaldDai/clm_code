@@ -14,12 +14,35 @@ from models.transformer.module.decode import decode
 from trainer.base_trainer import BaseTrainer
 from models.transformer.module.label_smoothing import LabelSmoothing
 from models.transformer.module.simpleloss_compute import SimpleLossCompute
+import torch.distributed as dist
+from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.utils.data import Dataset, DataLoader
+from torch.utils.data.distributed import DistributedSampler
+import signal
+import models.dataset as md
+import pandas as pd
+
+# 全局变量用于控制训练循环
+should_stop = False
+
+def setup():
+    dist.init_process_group("nccl")
+
+def cleanup():
+    dist.destroy_process_group()
+
+def signal_handler(signum, frame):
+    global should_stop
+    print(f"Received signal {signum}. Stopping training...", flush=True)
+    should_stop = True
 
 
 class TransformerTrainer(BaseTrainer):
 
-    def __init__(self, opt):
+    def __init__(self, opt, rank, world_size):
         super().__init__(opt)
+        self.rank = rank
+        self.world_size = world_size
 
     def get_model(self, opt, vocab, device):
         vocab_size = len(vocab.tokens())
@@ -61,12 +84,22 @@ class TransformerTrainer(BaseTrainer):
             optim = self._load_optimizer_from_epoch(model, file_name)
         return optim
 
+    def initialize_dataloader(self, data_path, batch_size, vocab, data_type, use_random=False):
+        data = pd.read_csv((os.path.join(data_path, data_type + '.csv')), sep=',')
+        dataset = md.Dataset(data=data, vocabulary=vocab, tokenizer=(mv.SMILESTokenizer()), prediction_mode=False, use_random=use_random)
+        sampler = DistributedSampler(dataset, num_replicas=self.world_size, rank=self.rank)
+        dataloader = DataLoader(dataset, batch_size, sampler=sampler,
+          collate_fn=(md.Dataset.collate_fn))
+        return dataloader
+
     def train_epoch(self, dataloader, model, loss_compute, device):
 
         pad = cfgd.DATA_DEFAULT['padding_value']
         total_loss = 0
         total_tokens = 0
         for i, batch in enumerate(ul.progress_bar(dataloader, total=len(dataloader))):
+            if should_stop:
+                break
             src, source_length, trg, src_mask, trg_mask, _, _ = batch
 
             trg_y = trg[:, 1:].to(device)  # skip start token
@@ -181,6 +214,12 @@ class TransformerTrainer(BaseTrainer):
         torch.save(save_dict, file_name)
 
     def train(self, opt):
+        isMain = self.rank == 0
+        global should_stop
+        torch.cuda.set_device(self.rank)
+        device = torch.device(f"cuda:{self.rank}")
+        signal.signal(signal.SIGINT, signal_handler)
+        signal.signal(signal.SIGTERM, signal_handler)
         # Load vocabulary
         # 加载词表
         if opt.starting_epoch == 1:
@@ -191,10 +230,11 @@ class TransformerTrainer(BaseTrainer):
                 vocab = pkl.load(input_file)
         vocab_size = len(vocab.tokens())
 
+        print(f"=====Available GPUs: {torch.cuda.device_count()}")
         # Data loader
-        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train')
+        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train', use_random=True)
         dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation')
-        device = torch.device('cuda')
+        # device = torch.device('cuda')
         #device = ut.allocate_gpu(1)
         #device = ut.allocate_gpu_multi()
         '''
@@ -208,18 +248,22 @@ class TransformerTrainer(BaseTrainer):
         # 重新创建优化器或读取先前optim
         optim = self.get_optimization(model, opt)
         # 分布式
-        model = torch.nn.DataParallel(model.cuda(),device_ids=[0])
+        model = DDP(model,device_ids=[self.rank], output_device=self.rank)
 
         #model = model.module
         pad_idx = cfgd.DATA_DEFAULT['padding_value']
         criterion = LabelSmoothing(size=len(vocab), padding_idx=pad_idx, smoothing=opt.label_smoothing)
 
+        print(f'=====before train: {self.rank}/{self.world_size}')
+        dist.barrier()
         # Train epoch
         for epoch in range(opt.starting_epoch, opt.starting_epoch + opt.num_epoch):
             self.LOG.info("Starting EPOCH #%d", epoch)
 
             self.LOG.info("Training start")
             model.module.train()
+            print(f'=====before train epoch({epoch}): {self.rank}/{self.world_size}')
+            dist.barrier()
             loss_epoch_train = self.train_epoch(dataloader_train,
                                                        model.module,
                                                        SimpleLossCompute(
@@ -227,9 +271,12 @@ class TransformerTrainer(BaseTrainer):
                                                                  criterion,
                                                                  optim), device)
 
+            if should_stop:
+                break
+            if not isMain:
+                continue
             self.LOG.info("Training end")
             self.save(model.module, optim, epoch, vocab_size, opt)
-
             self.LOG.info("Validation start")
             model.module.eval()
             loss_epoch_validation, accuracy = self.validation_stat(

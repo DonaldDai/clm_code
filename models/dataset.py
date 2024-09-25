@@ -12,34 +12,9 @@ from torch.autograd import Variable
 import configuration.config_default as cfgd
 from models.transformer.module.subsequent_mask import subsequent_mask
 
+from rdkit.Chem.SaltRemover import SaltRemover
 import random
 import rdkit.Chem as rkc
-
-def randomize_smiles(smiles, random_type="unrestricted"):
-    """
-    Returns a random SMILES given a SMILES of a molecule.
-    :param mol: A Mol object
-    :param random_type: The type (unrestricted, restricted) of randomization performed.
-    :return : A random SMILES string of the same molecule or None if the molecule is invalid.
-    """
-    mol = rkc.MolFromSmiles(smiles)
-    if not mol:
-        return None
-
-    if random_type == "unrestricted":
-        ret = rkc.MolToSmiles(mol, canonical=False, doRandom=True, isomericSmiles=False)
-        if not bool(ret):
-            return mol
-        return ret
-    if random_type == "restricted":
-        new_atom_order = list(range(mol.GetNumAtoms()))
-        random.shuffle(new_atom_order)
-        random_mol = rkc.RenumberAtoms(mol, newOrder=new_atom_order)
-        ret = rkc.MolToSmiles(random_mol, canonical=False, isomericSmiles=False)
-        if not bool(ret):
-            return mol
-        return ret
-    raise ValueError("Type '{}' is not valid".format(random_type))
 
 class Dataset(tud.Dataset):
     """Custom PyTorch Dataset that takes a file containing
@@ -49,7 +24,7 @@ class Dataset(tud.Dataset):
     Source_Mol_Clint,Target_Mol_Clint,Delta_Clint,
     Transformation,Core"""
 
-    def __init__(self, data, vocabulary, tokenizer, prediction_mode=False):
+    def __init__(self, data, vocabulary, tokenizer, prediction_mode=False, use_random=False):
         """
 
         :param data: dataframe read from training, validation or test file
@@ -61,6 +36,40 @@ class Dataset(tud.Dataset):
         self._tokenizer = tokenizer
         self._data = data
         self._prediction_mode = prediction_mode
+        self._use_random = use_random
+
+    def smiles_preprocess(self, smiles, random_type="unrestricted"):
+        """
+        Returns a random SMILES given a SMILES of a molecule.
+        :param mol: A Mol object
+        :param random_type: The type (unrestricted, restricted) of randomization performed.
+        :return : A random SMILES string of the same molecule or None if the molecule is invalid.
+        """
+        if not self._use_random:
+            return smiles
+        mol = rkc.MolFromSmiles(smiles)
+        if not mol:
+            return None
+
+        remover = SaltRemover()  ## default salt remover
+        if random_type == "unrestricted":
+            stripped = remover.StripMol(mol)
+            if stripped == None:
+                return smiles
+            ret = rkc.MolToSmiles(stripped, canonical=False, doRandom=True, isomericSmiles=False)
+            if not bool(ret):
+                return mol
+            return ret
+        if random_type == "restricted":
+            new_atom_order = list(range(mol.GetNumAtoms()))
+            random.shuffle(new_atom_order)
+            random_mol = rkc.RenumberAtoms(mol, newOrder=new_atom_order)
+            ret = rkc.MolToSmiles(random_mol, canonical=False, isomericSmiles=False)
+            if not bool(ret):
+                return mol
+            return ret
+        raise ValueError("Type '{}' is not valid".format(random_type))
+
 
     def __getitem__(self, i):
         """
@@ -71,8 +80,8 @@ class Dataset(tud.Dataset):
 
         row = self._data.iloc[i]
         # tokenize and encode source smiles
-        sourceConstant = row['constantSMILES']
-        sourceVariable = row['fromVarSMILES']
+        sourceConstant = self.smiles_preprocess(row['constantSMILES'])
+        sourceVariable = self.smiles_preprocess(row['fromVarSMILES'])
         main_cls = row['main_cls']
         minor_cls = row['minor_cls']
         target_name = row['target_name']
@@ -81,7 +90,7 @@ class Dataset(tud.Dataset):
         source_tokens = []
 
         # 先variable
-        source_tokens.extend(self._tokenizer.tokenize(randomize_smiles(sourceVariable)))  ## add source variable SMILES token
+        source_tokens.extend(self._tokenizer.tokenize(sourceVariable))  ## add source variable SMILES token
         # 再 major class eg activity
         source_tokens.append(main_cls)
         # 再 minor class eg Ki
@@ -91,8 +100,20 @@ class Dataset(tud.Dataset):
         # 然后target name
         source_tokens.extend(list(target_name))
         # 接着constant
-        source_tokens.extend(self._tokenizer.tokenize(randomize_smiles(sourceConstant))) ## add source constant SMILES token
-        source_encoded = self._vocabulary.encode(source_tokens)
+        source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
+        try:
+            source_encoded = self._vocabulary.encode(source_tokens)
+        except KeyError as e:
+            # random出新字符的时候使用random前数据继续训练
+            print(f'======KeyError', e)
+            source_tokens = []
+            source_tokens.extend(self._tokenizer.tokenize(row['fromVarSMILES']))
+            source_tokens.append(main_cls)
+            source_tokens.append(minor_cls)
+            source_tokens.append(value)
+            source_tokens.extend(list(target_name))
+            source_tokens.extend(self._tokenizer.tokenize(row['constantSMILES']))
+            source_encoded = self._vocabulary.encode(source_tokens)
         
         # print(source_tokens,'\n=====\n', source_encoded)
         # tokenize and encode target smiles if it is for training instead of evaluation
