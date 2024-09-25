@@ -12,35 +12,6 @@ from torch.autograd import Variable
 import configuration.config_default as cfgd
 from models.transformer.module.subsequent_mask import subsequent_mask
 
-import random
-import rdkit.Chem as rkc
-
-def randomize_smiles(smiles, random_type="unrestricted"):
-    """
-    Returns a random SMILES given a SMILES of a molecule.
-    :param mol: A Mol object
-    :param random_type: The type (unrestricted, restricted) of randomization performed.
-    :return : A random SMILES string of the same molecule or None if the molecule is invalid.
-    """
-    mol = rkc.MolFromSmiles(smiles)
-    if not mol:
-        return None
-
-    if random_type == "unrestricted":
-        ret = rkc.MolToSmiles(mol, canonical=False, doRandom=True, isomericSmiles=False)
-        if not bool(ret):
-            return mol
-        return ret
-    if random_type == "restricted":
-        new_atom_order = list(range(mol.GetNumAtoms()))
-        random.shuffle(new_atom_order)
-        random_mol = rkc.RenumberAtoms(mol, newOrder=new_atom_order)
-        ret = rkc.MolToSmiles(random_mol, canonical=False, isomericSmiles=False)
-        if not bool(ret):
-            return mol
-        return ret
-    raise ValueError("Type '{}' is not valid".format(random_type))
-
 class Dataset(tud.Dataset):
     """Custom PyTorch Dataset that takes a file containing
     Source_Mol_ID,Target_Mol_ID,Source_Mol,Target_Mol,
@@ -75,23 +46,20 @@ class Dataset(tud.Dataset):
         sourceVariable = row['fromVarSMILES']
         main_cls = row['main_cls']
         minor_cls = row['minor_cls']
-        target_name = row['target_name']
         value = row['Delta_Value']
         # value = row['Delta_pki']
         source_tokens = []
 
         # 先variable
-        source_tokens.extend(self._tokenizer.tokenize(randomize_smiles(sourceVariable)))  ## add source variable SMILES token
+        source_tokens.extend(self._tokenizer.tokenize(sourceVariable))  ## add source variable SMILES token
         # 再 major class eg activity
         source_tokens.append(main_cls)
         # 再 minor class eg Ki
         source_tokens.append(minor_cls)
         # 然后value
         source_tokens.append(value)
-        # 然后target name
-        source_tokens.extend(list(target_name))
         # 接着constant
-        source_tokens.extend(self._tokenizer.tokenize(randomize_smiles(sourceConstant))) ## add source constant SMILES token
+        source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
         source_encoded = self._vocabulary.encode(source_tokens)
         
         # print(source_tokens,'\n=====\n', source_encoded)
