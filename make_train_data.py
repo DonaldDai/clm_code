@@ -133,10 +133,10 @@ if __name__ == "__main__":
         test.to_csv(os.path.join(parent, "test.csv"), index=False)
 
     root = '/home/yichao/zhilian/GenAICode/Data/MMPFinised/*'
-    # csvFiles = glob(f"{root}/*_MMP.csv")
-    # for idx, file in enumerate(csvFiles):
-    #     LOG.info(f"\n=== handling {idx} {file}")
-    #     gen_train_data(file)
+    csvFiles = glob(f"{root}/*_MMP.csv")
+    for idx, file in enumerate(csvFiles):
+        LOG.info(f"\n=== handling {idx} {file}")
+        gen_train_data(file)
         # if idx > 100:
         #     break
     
