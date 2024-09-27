@@ -92,7 +92,7 @@ if __name__ == "__main__":
     csvFiles = glob(f"/home/yichao/zhilian/GenAICode/Data/MMPFinised/*/*_MMP.csv")
     # 记录smiles main_cls minor_cls
     for idx, file in enumerate(csvFiles):
-        LOG.info(f"===handling {file}")
+        LOG.info(f"===handling {idx} {file}")
         record_vocal(vocabulary, file)
         # if idx > 500:
         #     break

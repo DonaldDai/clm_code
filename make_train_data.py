@@ -21,6 +21,7 @@ import pandas as pd
 from pathlib import Path
 from const import seq_interval, bool_interval
 from sklearn.model_selection import train_test_split
+import time
 # 处理的是分解后的分子结构，用于更复杂的化学反应建模，使用SMARTS标记定义了分子中的可变和不变部分。
 global LOG
 LOG = ul.get_logger("preprocess", "experiments/preprocess.log")
@@ -70,6 +71,24 @@ def parse_args():
 
     return parser.parse_args()
 
+def merge_csv_file(csv_files, output_file='./merged.csv', chunksize=100000):
+    # 初始化一个标志位，用于在第一个文件的第一个块写入时包含头部
+    first_chunk = True
+    with open(output_file, 'w', newline='') as fout:
+        total = len(csv_files)
+        for idx, file in enumerate(csv_files):
+            start = time.time()
+            # 使用 chunksize 参数分批次读取每个 CSV 文件
+            for idx2, chunk in enumerate(pd.read_csv(file, chunksize=chunksize)):
+                # 将数据流式写入到输出文件，只在第一个块时写入头部
+                chunk.to_csv(fout, header=first_chunk, index=False, mode='a')
+                
+                # 确保后续写入不再包括头部
+                if first_chunk:
+                    first_chunk = False
+            end = time.time()
+            print(f"===({idx}/{total})write file {end - start}s | {file}")
+
 SEED = 42
 
 if __name__ == "__main__":
@@ -114,39 +133,21 @@ if __name__ == "__main__":
         test.to_csv(os.path.join(parent, "test.csv"), index=False)
 
     root = '/home/yichao/zhilian/GenAICode/Data/MMPFinised/*'
-    csvFiles = glob(f"{root}/*_MMP.csv")
-    for idx, file in enumerate(csvFiles):
-        LOG.info(f"\n=== handling {file}")
-        gen_train_data(file)
+    # csvFiles = glob(f"{root}/*_MMP.csv")
+    # for idx, file in enumerate(csvFiles):
+    #     LOG.info(f"\n=== handling {idx} {file}")
+    #     gen_train_data(file)
         # if idx > 100:
         #     break
     
     # merge train data
-    combined_df = pd.DataFrame()
     trainFiles = glob(f"{root}/train.csv")
-    for train_file in trainFiles:
-        LOG.info(f"\n=== mergin train: {train_file}")
-        df = pd.read_csv(train_file)
-        combined_df = pd.concat([combined_df, df], ignore_index=True)
-    # 保存到新的 CSV 文件，不包含索引
-    combined_df.to_csv('./train.csv', index=False)
+    merge_csv_file(trainFiles, './train.csv')
 
     # merge validation data
-    combined_val_df = pd.DataFrame()
     valFiles = glob(f"{root}/validation.csv")
-    for val_file in valFiles:
-        LOG.info(f"\n=== mergin val: {val_file}")
-        df = pd.read_csv(val_file)
-        combined_val_df = pd.concat([combined_val_df, df], ignore_index=True)
-    # 保存到新的 CSV 文件，不包含索引
-    combined_val_df.to_csv('./validation.csv', index=False)
+    merge_csv_file(valFiles, './validation.csv')
 
     # merge test data
-    combined_test_df = pd.DataFrame()
     testFiles = glob(f"{root}/test.csv")
-    for test_file in testFiles:
-        LOG.info(f"\n=== mergin test: {test_file}")
-        df = pd.read_csv(test_file)
-        combined_test_df = pd.concat([combined_test_df, df], ignore_index=True)
-    # 保存到新的 CSV 文件，不包含索引
-    combined_test_df.to_csv('./test.csv', index=False)
+    merge_csv_file(testFiles, './test.csv')
