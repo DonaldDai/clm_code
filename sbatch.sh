@@ -17,7 +17,7 @@ source /work/09735/yichao/ls6/miniconda/etc/profile.d/conda.sh
 conda activate drugassist-jay
 
 # 切换到特定的工作目录
-cd /work/09735/yichao/ls6/zhilian/CLModel_v2_zl
+cd /work/09735/yichao/ls6/zhilian/clm_code
 
 # export PYTORCH_CUDA_ALLOC_CONF="expandable_segments:True"
 
