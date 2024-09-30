@@ -13,6 +13,7 @@ if __name__ == "__main__":
 
     opts.train_opts(parser)
     opts.train_opts_transformer(parser)
+    parser.add_argument("--bar", type=bool, default=False)
     opt = parser.parse_args()
 
     dist.init_process_group("nccl")
@@ -23,5 +24,5 @@ if __name__ == "__main__":
         
     # elif opt.model_choice == 'seq2seq':
     #     trainer = Seq2SeqTrainer(opt)
-    print(f"Starting training on rank {rank} out of {world_size} processes")
+    print(f"Starting training on rank {rank} out of {world_size} processes | bar {opt.bar}")
     trainer.train(opt)
