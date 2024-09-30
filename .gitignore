@@ -1,6 +1,7 @@
 pretrain*/
 generate*/
 Generation/
+logs/
 *.pkl
 *.csv
 *.tar.gz
