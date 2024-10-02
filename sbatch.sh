@@ -26,4 +26,4 @@ MASTER_ADDR=$(hostname)
 
 # 执行PyTorch分布式训练命令
 # 端口最好使用随机的
-srun bash -c "torchrun --nproc_per_node=3 --nnodes=4 --node_rank=\$SLURM_NODEID --master_addr=$MASTER_ADDR --master_port=39688 train.py --model-choice transformer --num-epoch 200  --data-path /work/09735/yichao/ls6/zhilian/clm_code  --save-directory /work/09735/yichao/ls6/zhilian/clm_code/pretrain"
+srun bash -c "torchrun --nproc_per_node=3 --nnodes=4 --node_rank=\$SLURM_NODEID --master_addr=$MASTER_ADDR --master_port=39688 train.py --model-choice transformer --batch-size 384 --num-epoch 200  --data-path /work/09735/yichao/ls6/zhilian/clm_code  --save-directory /work/09735/yichao/ls6/zhilian/clm_code/pretrain_cut"
