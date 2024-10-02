@@ -22,6 +22,7 @@ from pathlib import Path
 from const import seq_interval, bool_interval
 from sklearn.model_selection import train_test_split
 import time
+from multiprocessing import Pool, cpu_count
 # 处理的是分解后的分子结构，用于更复杂的化学反应建模，使用SMARTS标记定义了分子中的可变和不变部分。
 global LOG
 LOG = ul.get_logger("preprocess", "experiments/preprocess.log")
@@ -91,54 +92,67 @@ def merge_csv_file(csv_files, output_file='./merged.csv', chunksize=100000):
 
 SEED = 42
 
+def gen_train_data(file_path, args):
+    SPLIT_RATIO = args.train_ratio
+    dfInput=pd.read_csv(file_path)
+    output_file = file_path.split('.csv')[0] + '_encoded.csv'
+    if Path(output_file).exists():
+        print(f'===== exist skip handle for : {output_file}')
+        return
+    # 小于5的样本丢弃，不好区分测试集和验证集
+    if len(dfInput) < 5:
+        print(f'===== less 5 skip handle for : {output_file}')
+        return
+    dfInput=dfInput.drop_duplicates(subset=['constantSMILES','fromVarSMILES','toVarSMILES'])
+    dfInput=dfInput[['constantSMILES','fromVarSMILES','toVarSMILES','Value_Diff', 'main_cls', 'minor_cls', 'value_type', 'target_name']]
+    dfInput.columns=['constantSMILES','fromVarSMILES','toVarSMILES','Delta_Value', 'main_cls', 'minor_cls', 'value_type', 'target_name']
+    newPath=Path(file_path).parent.joinpath("train_valid_test_full.csv")   ## will be saved
+    dfInput.to_csv(newPath, index=None)
+    # args.input_data_path=newPath.as_posix()
+
+    # 将数值转换成编码区间
+    data = dfInput
+    value_type = data['value_type'][0]
+    # 判断是连续值还是bool值
+    if value_type == 'seq':
+        data['Delta_Value'] = data['Delta_Value'].apply(encode_seq)
+    elif value_type == 'bool':
+        data['Delta_Value'] = data['Delta_Value'].apply(encode_bool)
+    
+    LOG.info("Saving encoded property change to file: {}".format(output_file))
+    data.to_csv(output_file, index=False)
+
+    # split data
+    train, test = train_test_split(
+        data, test_size=(1-SPLIT_RATIO)/2, random_state=SEED)
+    train, validation = train_test_split(train, test_size=(1-SPLIT_RATIO)/2, random_state=SEED)
+    LOG.info("Train, Validation, Test: %d, %d, %d" % (len(train), len(validation), len(test)))
+
+    parent = uf.get_parent_dir(file_path)
+    train.to_csv(os.path.join(parent, "train.csv"), index=False)
+    validation.to_csv(os.path.join(parent, "validation.csv"), index=False)
+    test.to_csv(os.path.join(parent, "test.csv"), index=False)
+
+def task(file, args, idx, total):
+    LOG.info(f"\n===({idx}/{total}) handling {file}")
+    gen_train_data(file, args)
+    print(f"\n===({idx}/{total}) finished {file}")
+
 if __name__ == "__main__":
 #  constantSMILES、fromVarSMILES 和 toVarSMILES，这些列代表分子结构中的不变部分和可变部分。
     args = parse_args()
-    SPLIT_RATIO = args.train_ratio
-    def gen_train_data(file_path):
-        dfInput=pd.read_csv(file_path)
-        # 小于5的样本丢弃，不好区分测试集和验证集
-        if len(dfInput) < 5:
-            return
-        dfInput=dfInput.drop_duplicates(subset=['constantSMILES','fromVarSMILES','toVarSMILES'])
-        dfInput=dfInput[['constantSMILES','fromVarSMILES','toVarSMILES','Value_Diff', 'main_cls', 'minor_cls', 'value_type', 'target_name']]
-        dfInput.columns=['constantSMILES','fromVarSMILES','toVarSMILES','Delta_Value', 'main_cls', 'minor_cls', 'value_type', 'target_name']
-        newPath=Path(file_path).parent.joinpath("train_valid_test_full.csv")   ## will be saved
-        dfInput.to_csv(newPath, index=None)
-        # args.input_data_path=newPath.as_posix()
-
-        # 将数值转换成编码区间
-        data = dfInput
-        value_type = data['value_type'][0]
-        # 判断是连续值还是bool值
-        if value_type == 'seq':
-            data['Delta_Value'] = data['Delta_Value'].apply(encode_seq)
-        elif value_type == 'bool':
-            data['Delta_Value'] = data['Delta_Value'].apply(encode_bool)
-        
-        # save encodeed file
-        output_file = file_path.split('.csv')[0] + '_encoded.csv'
-        LOG.info("Saving encoded property change to file: {}".format(output_file))
-        data.to_csv(output_file, index=False)
-
-        # split data
-        train, test = train_test_split(
-            data, test_size=(1-SPLIT_RATIO)/2, random_state=SEED)
-        train, validation = train_test_split(train, test_size=(1-SPLIT_RATIO)/2, random_state=SEED)
-        LOG.info("Train, Validation, Test: %d, %d, %d" % (len(train), len(validation), len(test)))
-
-        parent = uf.get_parent_dir(file_path)
-        train.to_csv(os.path.join(parent, "train.csv"), index=False)
-        validation.to_csv(os.path.join(parent, "validation.csv"), index=False)
-        test.to_csv(os.path.join(parent, "test.csv"), index=False)
 
     root = '/home/yichao/zhilian/GenAICode/Data/MMPFinised/*'
     csvFiles = glob(f"{root}/*_MMP.csv")
+    start = time.time()
+    p = Pool(int(cpu_count()/2))
+    listLen = len(csvFiles)
     for idx, file in enumerate(csvFiles):
-        LOG.info(f"\n=== handling {idx} {file}")
-        gen_train_data(file)
-        # if idx > 100:
-        #     break
+        p.apply_async(task, args=(file, args, idx + 1, listLen))
+    p.close()
+    p.join()
+    end = time.time()
+    print("encode文件总共用时{}秒".format((end - start)))
     
     # merge train data
     trainFiles = glob(f"{root}/train.csv")
