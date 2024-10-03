@@ -233,8 +233,8 @@ class TransformerTrainer(BaseTrainer):
 
         print(f"=====Available GPUs: {torch.cuda.device_count()}")
         # Data loader
-        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train_cut', use_random=True)
-        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation_cut')
+        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train', use_random=True)
+        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation')
         # device = torch.device('cuda')
         #device = ut.allocate_gpu(1)
         #device = ut.allocate_gpu_multi()
