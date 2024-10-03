@@ -40,7 +40,7 @@ def signal_handler(signum, frame):
 class TransformerTrainer(BaseTrainer):
 
     def __init__(self, opt, local_rank, rank, world_size):
-        super().__init__(opt)
+        super().__init__(opt, rank)
         self.local_rank = local_rank
         self.rank = rank
         self.world_size = world_size
@@ -233,8 +233,8 @@ class TransformerTrainer(BaseTrainer):
 
         print(f"=====Available GPUs: {torch.cuda.device_count()}")
         # Data loader
-        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train', use_random=True)
-        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation')
+        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train_cut', use_random=True)
+        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation_cut')
         # device = torch.device('cuda')
         #device = ut.allocate_gpu(1)
         #device = ut.allocate_gpu_multi()
