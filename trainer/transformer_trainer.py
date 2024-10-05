@@ -98,9 +98,12 @@ class TransformerTrainer(BaseTrainer):
         pad = cfgd.DATA_DEFAULT['padding_value']
         total_loss = 0
         total_tokens = 0
-        for i, batch in enumerate(ul.progress_bar(dataloader, total=len(dataloader), disable=(not opt.bar))):
+        loaderLen=len(dataloader)
+        for i, batch in enumerate(ul.progress_bar(dataloader, total=loaderLen, disable=(not opt.bar))):
             if should_stop:
                 break
+            if i % 10000 == 0:
+                print(f'== train batch {i}/{loaderLen}')
             src, source_length, trg, src_mask, trg_mask, _, _ = batch
 
             trg_y = trg[:, 1:].to(device)  # skip start token
@@ -134,8 +137,10 @@ class TransformerTrainer(BaseTrainer):
         total_tokens = 0
 
         tokenizer = mv.SMILESTokenizer()
-        for i, batch in enumerate(ul.progress_bar(dataloader, total=len(dataloader))):
-
+        loaderLen = len(dataloader)
+        for i, batch in enumerate(ul.progress_bar(dataloader, total=loaderLen)):
+            if i % 10000 == 0:
+                print(f'==val batch {i}/{loaderLen}')
             src, source_length, trg, src_mask, trg_mask, _, _ = batch
 
             trg_y = trg[:, 1:].to(device)  # skip start token
