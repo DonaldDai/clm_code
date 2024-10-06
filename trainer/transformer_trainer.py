@@ -128,7 +128,7 @@ class TransformerTrainer(BaseTrainer):
        # print("total_tokens",total_tokens)
         return loss_epoch
 
-    def validation_stat(self, dataloader, model, loss_compute, device, vocab):
+    def validation_stat(self, dataloader, model, loss_compute, device, vocab, opt):
         pad = cfgd.DATA_DEFAULT['padding_value']
         total_loss = 0
 
@@ -138,8 +138,8 @@ class TransformerTrainer(BaseTrainer):
 
         tokenizer = mv.SMILESTokenizer()
         loaderLen = len(dataloader)
-        for i, batch in enumerate(ul.progress_bar(dataloader, total=loaderLen)):
-            if i % 10000 == 0:
+        for i, batch in enumerate(ul.progress_bar(dataloader, total=loaderLen, disable=(not opt.bar))):
+            if i % 1000 == 0:
                 print(f'==val batch {i}/{loaderLen}')
             src, source_length, trg, src_mask, trg_mask, _, _ = batch
 
@@ -290,7 +290,7 @@ class TransformerTrainer(BaseTrainer):
                 model.module,
                 SimpleLossCompute(
                     model.module.generator, criterion, None),
-                device, vocab)
+                device, vocab, opt)
 
 
             self.LOG.info("Validation end")
