@@ -15,6 +15,7 @@ from models.transformer.module.subsequent_mask import subsequent_mask
 from rdkit.Chem.SaltRemover import SaltRemover
 import random
 import rdkit.Chem as rkc
+from common.utils import Data_Type
 
 class Dataset(tud.Dataset):
     """Custom PyTorch Dataset that takes a file containing
@@ -24,7 +25,7 @@ class Dataset(tud.Dataset):
     Source_Mol_Clint,Target_Mol_Clint,Delta_Clint,
     Transformation,Core"""
 
-    def __init__(self, data, vocabulary, tokenizer, prediction_mode=False, use_random=False):
+    def __init__(self, data, vocabulary, tokenizer, prediction_mode=False, use_random=False, data_type=Data_Type.frag):
         """
 
         :param data: dataframe read from training, validation or test file
@@ -37,6 +38,7 @@ class Dataset(tud.Dataset):
         self._data = data
         self._prediction_mode = prediction_mode
         self._use_random = use_random
+        self._data_type = data_type
 
     def smiles_preprocess(self, smiles, random_type="unrestricted"):
         """
@@ -82,6 +84,7 @@ class Dataset(tud.Dataset):
         # tokenize and encode source smiles
         sourceConstant = self.smiles_preprocess(row['constantSMILES'])
         sourceVariable = self.smiles_preprocess(row['fromVarSMILES'])
+        sourceSmi = self.smiles_preprocess(row['cpd1SMILES'])
         main_cls = row['main_cls']
         minor_cls = row['minor_cls']
         target_name = row['target_name']
@@ -90,8 +93,13 @@ class Dataset(tud.Dataset):
         # value = row['Delta_pki']
         source_tokens = []
 
-        # 先variable
-        source_tokens.extend(self._tokenizer.tokenize(sourceVariable))  ## add source variable SMILES token
+        if self._data_type == Data_Type.frag:
+            # 先variable
+            source_tokens.extend(self._tokenizer.tokenize(sourceVariable))  ## add source variable SMILES token
+            # 接着constant
+            source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
+        elif self._data_type == Data_Type.whole:
+            source_tokens.extend(self._tokenizer.tokenize(sourceSmi))
         # 再 major class eg activity
         source_tokens.append(main_cls)
         # 再 minor class eg Ki
@@ -100,26 +108,17 @@ class Dataset(tud.Dataset):
         source_tokens.append(value)
         # 然后target name
         source_tokens.extend(list(target_name))
-        # 接着constant
-        source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
-        try:
-            source_encoded = self._vocabulary.encode(source_tokens)
-        except KeyError as e:
-            # random出新字符的时候使用random前数据继续训练
-            print(f'======KeyError', e)
-            source_tokens = []
-            source_tokens.extend(self._tokenizer.tokenize(row['fromVarSMILES']))
-            source_tokens.append(main_cls)
-            source_tokens.append(minor_cls)
-            source_tokens.append(value)
-            source_tokens.extend(list(target_name))
-            source_tokens.extend(self._tokenizer.tokenize(row['constantSMILES']))
-            source_encoded = self._vocabulary.encode(source_tokens)
+
+        source_encoded = self._vocabulary.encode(source_tokens)
         
         # print(source_tokens,'\n=====\n', source_encoded)
         # tokenize and encode target smiles if it is for training instead of evaluation
         if not self._prediction_mode:
-            target_smi = row['toVarSMILES']
+            target_smi = ''
+            if self._data_type == Data_Type.frag:
+                target_smi = row['toVarSMILES']
+            elif self._data_type == Data_Type.whole:
+                target_smi = row['cpd2SMILES']
             target_tokens = self._tokenizer.tokenize(target_smi)
             target_encoded = self._vocabulary.encode(target_tokens)
 
