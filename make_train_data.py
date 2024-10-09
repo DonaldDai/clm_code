@@ -104,8 +104,8 @@ def gen_train_data(file_path, args):
         print(f'===== less 5 skip handle for : {output_file}')
         return
     dfInput=dfInput.drop_duplicates(subset=['constantSMILES','fromVarSMILES','toVarSMILES'])
-    dfInput=dfInput[['constantSMILES','fromVarSMILES','toVarSMILES','Value_Diff', 'main_cls', 'minor_cls', 'value_type', 'target_name']]
-    dfInput.columns=['constantSMILES','fromVarSMILES','toVarSMILES','Delta_Value', 'main_cls', 'minor_cls', 'value_type', 'target_name']
+    dfInput=dfInput[['cpd1SMILES', 'cpd2SMILES', 'constantSMILES','fromVarSMILES','toVarSMILES','Value_Diff', 'main_cls', 'minor_cls', 'value_type', 'target_name']]
+    dfInput.columns=['cpd1SMILES', 'cpd2SMILES', 'constantSMILES','fromVarSMILES','toVarSMILES','Delta_Value', 'main_cls', 'minor_cls', 'value_type', 'target_name']
     newPath=Path(file_path).parent.joinpath("train_valid_test_full.csv")   ## will be saved
     dfInput.to_csv(newPath, index=None)
     # args.input_data_path=newPath.as_posix()
