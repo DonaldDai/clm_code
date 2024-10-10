@@ -55,6 +55,7 @@ class TransformerTrainer(BaseTrainer):
                                           d_model=opt.d_model, d_ff=opt.d_ff, h=opt.H, dropout=opt.dropout)
         else:
             # Load model
+            print(f"===load model from... {os.path.join(opt.pretrain_path, f'checkpoint/model_{opt.starting_epoch-1}.pt')}")
             file_name = os.path.join(opt.pretrain_path, f'checkpoint/model_{opt.starting_epoch-1}.pt')
             model= EncoderDecoder.load_from_file(file_name)
         # move to GPU
@@ -103,7 +104,7 @@ class TransformerTrainer(BaseTrainer):
         for i, batch in enumerate(ul.progress_bar(dataloader, total=loaderLen, disable=(not opt.bar))):
             if should_stop:
                 break
-            if i % 10000 == 0:
+            if i % 1000 == 0:
                 print(f'== train batch {i}/{loaderLen}')
             src, source_length, trg, src_mask, trg_mask, _, _ = batch
 
@@ -124,6 +125,11 @@ class TransformerTrainer(BaseTrainer):
             total_tokens += ntokens
             total_loss += float(loss)
 
+        if total_tokens == 0:
+            file_name = os.path.join(self.save_path, f'zero_train_{i}_{self.rank}.pkl')
+            with open(file_name, 'wb') as f:
+                pkl.dump(batch, f)
+            raise ValueError('get zero total_tokens')
         loss_epoch = total_loss / total_tokens
        # print("total_loss_train",total_loss)
        # print("total_tokens",total_tokens)
@@ -140,7 +146,9 @@ class TransformerTrainer(BaseTrainer):
         tokenizer = mv.SMILESTokenizer()
         loaderLen = len(dataloader)
         for i, batch in enumerate(ul.progress_bar(dataloader, total=loaderLen, disable=(not opt.bar))):
-            if i % 1000 == 0:
+            if should_stop:
+                break
+            if i % 10000 == 0:
                 print(f'==val batch {i}/{loaderLen}')
             src, source_length, trg, src_mask, trg_mask, _, _ = batch
 
@@ -187,6 +195,11 @@ class TransformerTrainer(BaseTrainer):
            # print("accuracy total n_trg inner:",n_correct/total_n_trg)
            # print("n_correct_num inner:",n_correct)
 
+        if total_tokens == 0:
+            file_name = os.path.join(self.save_path, f'zero_val_{i}_{self.rank}.pkl')
+            with open(file_name, 'wb') as f:
+                pkl.dump(batch, f)
+            raise ValueError('get zero total_tokens')
         # Accuracy
         accuracy = n_correct*1.0 /total_n_trg
         loss_epoch = total_loss / total_tokens
@@ -239,8 +252,8 @@ class TransformerTrainer(BaseTrainer):
 
         print(f"=====Available GPUs: {torch.cuda.device_count()}")
         # Data loader
-        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train_cut', use_random=True, data_type=opt.data_type)
-        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation_cut', data_type=opt.data_type)
+        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train', use_random=True, data_type=opt.data_type)
+        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation', data_type=opt.data_type)
         # device = torch.device('cuda')
         #device = ut.allocate_gpu(1)
         #device = ut.allocate_gpu_multi()

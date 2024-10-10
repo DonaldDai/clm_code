@@ -60,7 +60,7 @@ class Dataset(tud.Dataset):
                 return smiles
             ret = rkc.MolToSmiles(stripped, canonical=False, doRandom=True, isomericSmiles=False)
             if not bool(ret):
-                return mol
+                return smiles
             return ret
         if random_type == "restricted":
             new_atom_order = list(range(mol.GetNumAtoms()))
@@ -68,7 +68,7 @@ class Dataset(tud.Dataset):
             random_mol = rkc.RenumberAtoms(mol, newOrder=new_atom_order)
             ret = rkc.MolToSmiles(random_mol, canonical=False, isomericSmiles=False)
             if not bool(ret):
-                return mol
+                return smiles
             return ret
         raise ValueError("Type '{}' is not valid".format(random_type))
 
