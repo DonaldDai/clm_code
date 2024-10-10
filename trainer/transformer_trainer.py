@@ -86,7 +86,7 @@ class TransformerTrainer(BaseTrainer):
             optim = self._load_optimizer_from_epoch(model, file_name)
         return optim
 
-    def initialize_dataloader(self, data_path, batch_size, vocab, data_name, use_random=False, data_type=Data_Type.frag):
+    def initialize_dataloader(self, data_path, batch_size, vocab, data_name, use_random=False, data_type=Data_Type.frag.value):
         data = pd.read_csv((os.path.join(data_path, data_name + '.csv')), sep=',')
         dataset = md.Dataset(data=data, vocabulary=vocab, tokenizer=(mv.SMILESTokenizer()), prediction_mode=False, use_random=use_random, data_type=data_type)
         sampler = DistributedSampler(dataset, num_replicas=self.world_size, rank=self.local_rank)
@@ -239,8 +239,8 @@ class TransformerTrainer(BaseTrainer):
 
         print(f"=====Available GPUs: {torch.cuda.device_count()}")
         # Data loader
-        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train', use_random=True, data_type=opt.data_type)
-        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation', data_type=opt.data_type)
+        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train_cut', use_random=True, data_type=opt.data_type)
+        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation_cut', data_type=opt.data_type)
         # device = torch.device('cuda')
         #device = ut.allocate_gpu(1)
         #device = ut.allocate_gpu_multi()

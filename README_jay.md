@@ -17,7 +17,11 @@ python train.py --model-choice transformer  --data-path  /home/yichao/zhilian/Ge
 ```
 torchrun
 ```shell
-torchrun --nproc_per_node=2 --nnodes=1 train.py --model-choice transformer --num-epoch 200  --data-path  /home/yichao/zhilian/GenAICode/CLModel_v2_zl  --save-directory /home/yichao/zhilian/GenAICode/CLModel_v2_zl/pretrain_v2
+torchrun --nproc_per_node=3 --nnodes=1 train.py --bar 1 --batch-size 4 --model-choice transformer --num-epoch 200  --data-path  /home/yichao/zhilian/GenAICode/CLModel_v2_zl  --save-directory /home/yichao/zhilian/GenAICode/CLModel_v2_zl/pretrain_v2
+```
+torchrun ls6
+```shell
+torchrun --nproc_per_node=3 --nnodes=1 train.py --data-type whole --batch-size 4 --model-choice transformer --num-epoch 200  --data-path  /work/09735/yichao/ls6/zhilian/clm_code  --save-directory /work/09735/yichao/ls6/zhilian/clm_code/pretrain_temp
 ```
 
 # fine tuning

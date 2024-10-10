@@ -25,7 +25,7 @@ class Dataset(tud.Dataset):
     Source_Mol_Clint,Target_Mol_Clint,Delta_Clint,
     Transformation,Core"""
 
-    def __init__(self, data, vocabulary, tokenizer, prediction_mode=False, use_random=False, data_type=Data_Type.frag):
+    def __init__(self, data, vocabulary, tokenizer, prediction_mode=False, use_random=False, data_type=Data_Type.frag.value):
         """
 
         :param data: dataframe read from training, validation or test file
@@ -93,12 +93,12 @@ class Dataset(tud.Dataset):
         # value = row['Delta_pki']
         source_tokens = []
 
-        if self._data_type == Data_Type.frag:
+        if self._data_type == Data_Type.frag.value:
             # 先variable
             source_tokens.extend(self._tokenizer.tokenize(sourceVariable))  ## add source variable SMILES token
             # 接着constant
             source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
-        elif self._data_type == Data_Type.whole:
+        elif self._data_type == Data_Type.whole.value:
             source_tokens.extend(self._tokenizer.tokenize(sourceSmi))
         # 再 major class eg activity
         source_tokens.append(main_cls)
@@ -115,9 +115,9 @@ class Dataset(tud.Dataset):
         # tokenize and encode target smiles if it is for training instead of evaluation
         if not self._prediction_mode:
             target_smi = ''
-            if self._data_type == Data_Type.frag:
+            if self._data_type == Data_Type.frag.value:
                 target_smi = row['toVarSMILES']
-            elif self._data_type == Data_Type.whole:
+            elif self._data_type == Data_Type.whole.value:
                 target_smi = row['cpd2SMILES']
             target_tokens = self._tokenizer.tokenize(target_smi)
             target_encoded = self._vocabulary.encode(target_tokens)
