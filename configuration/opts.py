@@ -120,6 +120,8 @@ def generate_opts(parser):
     group.add_argument('--num-samples', type=int, default=50,
                        help='Number of molecules to be generated')
     group.add_argument('--decode-type',type=str, default='multinomial',help='decode strategy')
+    group.add_argument('--dev_no',type=int, default=0, help='using device')
+    group.add_argument('--overwrite',type=bool, default=False, help='whether overwrite exist file')
 
 
 def evaluation_opts(parser):

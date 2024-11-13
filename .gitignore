@@ -5,3 +5,6 @@ logs/
 *.pkl
 *.csv
 *.tar.gz
+*temp*.py
+wandb
+temp

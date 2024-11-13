@@ -3,7 +3,7 @@ import pickle as pkl
 import os
 import argparse
 import pandas as pd
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+from pathlib import Path
 import torch
 
 import utils.chem as uc
@@ -41,8 +41,12 @@ class GenerateRunner():
 
         # self.save_path = os.path.join('experiments', opt.save_directory, opt.test_file_name,
                                     #   f'evaluation_{opt.epoch}')
-        self.save_path = os.path.join(opt.save_directory, opt.test_file_name,
-                                      f'evaluation_{opt.epoch}')
+        path = Path(os.path.join(opt.save_directory))
+        path.mkdir(parents=True, exist_ok=True)
+        self.save_path = os.path.join(path)
+        self.exist_flag = Path(f'{self.save_path}/generated_molecules.csv').exists()
+        self.overwrite = opt.overwrite
+        self.dev_no = opt.dev_no
         global LOG
         LOG = ul.get_logger(name="generate",
                             log_path=os.path.join(self.save_path, 'generate.log'))
@@ -72,13 +76,15 @@ class GenerateRunner():
         return dataloader
 
     def generate(self, opt):
-
+        if not self.overwrite and self.exist_flag:
+            print('GENERATED MOL EXIST, SKIP GENERATING!')
+            return
         # set device
         #device = ut.allocate_gpu()
         # torch.cuda.set_device(1)
         # current_device = torch.cuda.current_device()
         # print("当前使用的 CUDA 设备编号是:", current_device)
-        device = torch.device('cuda:1')
+        device = torch.device(f'cuda:{self.dev_no}')
         # 构造loader
         dataloader_test = self.initialize_dataloader(opt, self.vocab, opt.test_file_name)
 
@@ -141,7 +147,7 @@ class GenerateRunner():
         # zeros correspondes to ****** which is valid according to RDKit
         sequences_all = torch.ones((num_samples, batch_size, max_len))
         sequences_all = sequences_all.type(torch.LongTensor)
-        max_trials = 100  # Maximum trials for sampling
+        max_trials = 10000  # Maximum trials for sampling
         current_trials = 0
 
         # greedy意思是只尝试一次生成，成了就有分子式，没成的话就没有

@@ -16,14 +16,14 @@ start_time = time.time()
 formatted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(start_time))
 
 # hyper params
-EPOCH = 17
+EPOCH = 20
 DRUG_BIN = f'/work/09735/yichao/ls6/miniconda/envs/drugassist-jay/bin/python'
 SEQ_VAL_R = [1, 5, 10, 15]
 NUMS = [1]
 OVERWRITE = False
 for i in range(5, 16, 5):
   NUMS.append(i)
-for i in range(20, 101, 20):
+for i in range(20, 501, 20):
   NUMS.append(i)
 max_num = max(NUMS)
 print(f'USING NUMS: {NUMS}, max num: {max_num}')

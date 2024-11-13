@@ -15,17 +15,17 @@ start_time = time.time()
 formatted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(start_time))
 
 # hyper params
-EPOCH = 11
+EPOCH = 20
 MODEL_EPOCH = 50
 DRUG_ENCODDING = 'MPNN'
 PART_N = 5
 DRUG_BIN = f'/work/09735/yichao/ls6/miniconda/envs/drugassist-jay/bin/python'
-NUMS = [1, 5]
+NUMS = [1]
 OVERWRITE = True
-# for i in range(5, 16, 5):
-#   NUMS.append(i)
-# for i in range(20, 201, 20):
-#   NUMS.append(i)
+for i in range(5, 16, 5):
+  NUMS.append(i)
+for i in range(20, 101, 20):
+  NUMS.append(i)
 max_num = max(NUMS)
 print(f'USING NUMS: {NUMS}, max num: {max_num}')
 run = wandb.init(

@@ -9,20 +9,21 @@ import argparse
 from multiprocessing import Pool
 import time
 import wandb
+from glob import glob
 
 
 start_time = time.time()
 formatted_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(start_time))
 
 # hyper params
-EPOCH = 12
+EPOCH = 20
 PROCESS_N = 24
 PART_N = 5
 NUMS = [1]
 OVERWRITE = False
 for i in range(5, 16, 5):
   NUMS.append(i)
-for i in range(20, 201, 20):
+for i in range(20, 501, 20):
   NUMS.append(i)
 max_num = max(NUMS)
 print(f'USING NUMS: {NUMS}, max num: {max_num}')
@@ -43,11 +44,16 @@ def draw(x, y):
   plt.grid(True, linestyle='--', color='grey', alpha=0.5)  # 使用更柔和的网格线
   return plt
 
-file_list = [('rm_target_pick_test', f"/work/09735/yichao/ls6/zhilian/clm_code/eval_gen/eval_produce_high_epoch{EPOCH}_n{max_num}")]
-# for part_n in range(PART_N):
-#   data_name = f'rm_target_pick_test_{part_n}'
-#   base = f"/work/09735/yichao/ls6/zhilian/clm_code/eval_gen/eval_produce_epoch{EPOCH}_part{part_n}_n{max_num}"
-#   file_list.append((data_name, base))
+file_list = []
+
+# for file in glob("/work/09735/yichao/ls6/zhilian/clm_code/sample_data/rm_target_*_filtered.csv"):
+#   p = Path(file)
+#   file_list.append((p.stem, f"/work/09735/yichao/ls6/zhilian/clm_code/eval_gen/eval_produce_{p.stem}_epoch{EPOCH}_n{max_num}"))
+# file_list = [('rm_target_pick_test', f"/work/09735/yichao/ls6/zhilian/clm_code/eval_gen/eval_produce_high_epoch{EPOCH}_n{max_num}")]
+for part_n in range(PART_N):
+  data_name = f'rm_target_pick_test_{part_n}'
+  base = f"/work/09735/yichao/ls6/zhilian/clm_code/eval_gen/eval_produce_epoch{EPOCH}_part{part_n}_n{max_num}"
+  file_list.append((data_name, base))
 for data_name, base in file_list:
   Path(base).mkdir(exist_ok=True, parents=True)
   gen_opt = {

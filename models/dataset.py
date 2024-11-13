@@ -82,9 +82,6 @@ class Dataset(tud.Dataset):
 
         row = self._data.iloc[i]
         # tokenize and encode source smiles
-        sourceConstant = self.smiles_preprocess(row['constantSMILES'])
-        sourceVariable = self.smiles_preprocess(row['fromVarSMILES'])
-        sourceSmi = self.smiles_preprocess(row['cpd1SMILES'])
         main_cls = row['main_cls']
         minor_cls = row['minor_cls']
         target_name = row['target_name']
@@ -94,11 +91,14 @@ class Dataset(tud.Dataset):
         source_tokens = []
 
         if self._data_type == Data_Type.frag.value:
+            sourceConstant = self.smiles_preprocess(row['constantSMILES'])
+            sourceVariable = self.smiles_preprocess(row['fromVarSMILES'])
             # 先variable
             source_tokens.extend(self._tokenizer.tokenize(sourceVariable))  ## add source variable SMILES token
             # 接着constant
             source_tokens.extend(self._tokenizer.tokenize(sourceConstant)) ## add source constant SMILES token
         elif self._data_type == Data_Type.whole.value:
+            sourceSmi = self.smiles_preprocess(row['cpd1SMILES'])
             source_tokens.extend(self._tokenizer.tokenize(sourceSmi))
         # 再 major class eg activity
         source_tokens.append(main_cls)

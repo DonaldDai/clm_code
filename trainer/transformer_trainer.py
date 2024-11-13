@@ -22,6 +22,11 @@ import signal
 import models.dataset as md
 import pandas as pd
 from common.utils import Data_Type
+import datetime
+
+def cus_log(msg: str):
+    current_time = datetime.datetime.now()
+    print(f'{current_time} | {msg}')
 
 # 全局变量用于控制训练循环
 should_stop = False
@@ -55,7 +60,7 @@ class TransformerTrainer(BaseTrainer):
                                           d_model=opt.d_model, d_ff=opt.d_ff, h=opt.H, dropout=opt.dropout)
         else:
             # Load model
-            print(f"===load model from... {os.path.join(opt.pretrain_path, f'checkpoint/model_{opt.starting_epoch-1}.pt')}")
+            cus_log(f"===load model from... {os.path.join(opt.pretrain_path, f'checkpoint/model_{opt.starting_epoch-1}.pt')}")
             file_name = os.path.join(opt.pretrain_path, f'checkpoint/model_{opt.starting_epoch-1}.pt')
             model= EncoderDecoder.load_from_file(file_name)
         # move to GPU
@@ -105,13 +110,19 @@ class TransformerTrainer(BaseTrainer):
             if should_stop:
                 break
             if i % 1000 == 0:
-                print(f'== train batch {i}/{loaderLen}')
+                cus_log(f'== train batch({self.rank}) {i}/{loaderLen} | total_tokens({total_tokens})')
             src, source_length, trg, src_mask, trg_mask, _, _ = batch
 
             trg_y = trg[:, 1:].to(device)  # skip start token
 
             # number of tokens without padding
             ntokens = float((trg_y != pad).data.sum())
+            if ntokens == 0:
+                file_name = os.path.join(self.save_path, f'zero_train_{i}_{self.rank}.pkl')
+                with open(file_name, 'wb') as f:
+                    pkl.dump(batch, f)
+                cus_log(f'==get zero ntokens {i}', src, source_length, trg, src_mask, trg_mask)
+                continue
 
             # Move to GPU
             src = src.to(device)
@@ -126,13 +137,13 @@ class TransformerTrainer(BaseTrainer):
             total_loss += float(loss)
 
         if total_tokens == 0:
-            file_name = os.path.join(self.save_path, f'zero_train_{i}_{self.rank}.pkl')
+            file_name = os.path.join(self.save_path, f'zero_total_train_{i}_{self.rank}.pkl')
             with open(file_name, 'wb') as f:
                 pkl.dump(batch, f)
-            raise ValueError('get zero total_tokens')
+            return -1
         loss_epoch = total_loss / total_tokens
-       # print("total_loss_train",total_loss)
-       # print("total_tokens",total_tokens)
+       # cus_log("total_loss_train",total_loss)
+       # cus_log("total_tokens",total_tokens)
         return loss_epoch
 
     def validation_stat(self, dataloader, model, loss_compute, device, vocab, opt):
@@ -148,14 +159,20 @@ class TransformerTrainer(BaseTrainer):
         for i, batch in enumerate(ul.progress_bar(dataloader, total=loaderLen, disable=(not opt.bar))):
             if should_stop:
                 break
-            if i % 10000 == 0:
-                print(f'==val batch {i}/{loaderLen}')
+            if i % 100 == 0:
+                cus_log(f'==val batch({self.rank}) {i}/{loaderLen} | total_tokens({total_tokens})')
             src, source_length, trg, src_mask, trg_mask, _, _ = batch
 
             trg_y = trg[:, 1:].to(device)  # skip start token
 
             # number of tokens without padding
             ntokens = float((trg_y != pad).data.sum())
+            if ntokens == 0:
+                file_name = os.path.join(self.save_path, f'zero_val_{i}_{self.rank}.pkl')
+                with open(file_name, 'wb') as f:
+                    pkl.dump(batch, f)
+                cus_log(f'==get zero val ntokens {i}', src, source_length, trg, src_mask, trg_mask)
+                continue
 
             # Move to GPU
             src = src.to(device)
@@ -178,11 +195,11 @@ class TransformerTrainer(BaseTrainer):
                     target = trg[j]
                     target = tokenizer.untokenize(vocab.decode(target.cpu().numpy()))
                     seq = tokenizer.untokenize(vocab.decode(seq.cpu().numpy()))
-                   # print("seq",seq)
-                   # print("target",target)
+                   # cus_log("seq",seq)
+                   # cus_log("target",target)
                     if seq == target:
                         n_correct += 1
-          #          print("N_CORRECT_1",n_correct)
+          #          cus_log("N_CORRECT_1",n_correct)
          #   print("N_CORRECT_2",n_correct)
 
             # number of samples in current batch
@@ -196,10 +213,10 @@ class TransformerTrainer(BaseTrainer):
            # print("n_correct_num inner:",n_correct)
 
         if total_tokens == 0:
-            file_name = os.path.join(self.save_path, f'zero_val_{i}_{self.rank}.pkl')
+            file_name = os.path.join(self.save_path, f'zero_total_val_{i}_{self.rank}.pkl')
             with open(file_name, 'wb') as f:
                 pkl.dump(batch, f)
-            raise ValueError('get zero total_tokens')
+            return -1, -1
         # Accuracy
         accuracy = n_correct*1.0 /total_n_trg
         loss_epoch = total_loss / total_tokens
@@ -250,10 +267,10 @@ class TransformerTrainer(BaseTrainer):
                 vocab = pkl.load(input_file)
         vocab_size = len(vocab.tokens())
 
-        print(f"=====Available GPUs: {torch.cuda.device_count()}")
+        cus_log(f"=====Available GPUs: {torch.cuda.device_count()}")
         # Data loader
-        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train', use_random=True, data_type=opt.data_type)
-        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation', data_type=opt.data_type)
+        dataloader_train = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'train_raw', use_random=True, data_type=opt.data_type)
+        dataloader_validation = self.initialize_dataloader(opt.data_path, opt.batch_size, vocab, 'validation_raw', data_type=opt.data_type)
         # device = torch.device('cuda')
         #device = ut.allocate_gpu(1)
         #device = ut.allocate_gpu_multi()
@@ -274,7 +291,7 @@ class TransformerTrainer(BaseTrainer):
         pad_idx = cfgd.DATA_DEFAULT['padding_value']
         criterion = LabelSmoothing(size=len(vocab), padding_idx=pad_idx, smoothing=opt.label_smoothing)
 
-        print(f'=====before train: {self.local_rank}/{self.rank}/{self.world_size}')
+        cus_log(f'=====before train: {self.local_rank}/{self.rank}/{self.world_size}')
         dist.barrier()
         # Train epoch
         for epoch in range(opt.starting_epoch, opt.starting_epoch + opt.num_epoch):
@@ -282,7 +299,7 @@ class TransformerTrainer(BaseTrainer):
 
             self.LOG.info("Training start")
             model.module.train()
-            print(f'=====before train epoch({epoch}): {self.local_rank}/{self.rank}/{self.world_size}')
+            cus_log(f'=====before train epoch({epoch}): {self.local_rank}/{self.rank}/{self.world_size}')
             dist.barrier()
             loss_epoch_train = self.train_epoch(dataloader_train,
                                                        model.module,
@@ -290,7 +307,8 @@ class TransformerTrainer(BaseTrainer):
                                                                  model.module.generator,
                                                                  criterion,
                                                                  optim), device, opt)
-
+            cus_log(f'=====end train epoch({epoch}): {self.local_rank}/{self.rank}/{self.world_size}')
+            dist.barrier()
             if should_stop:
                 break
             if not isMain:
